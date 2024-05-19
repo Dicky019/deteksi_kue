@@ -1,0 +1,27 @@
+name: deteksi_kue
+description: "A new Flutter project."
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+
+dependencies:
+  camera: ^0.11.0
+  flutter:
+    sdk: flutter
+  flutter_markdown: ^0.7.1
+  image: ^4.1.7
+  image_picker: ^1.1.1
+  tflite_flutter: ^0.10.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/models/
