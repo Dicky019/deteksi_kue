@@ -14,37 +14,30 @@
  * limitations under the License.
  */
 
+import 'package:deteksi_kue/ui/home.dart';
 import 'package:flutter/material.dart';
-
-import 'ui/gallery.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 Future<void> main() async {
-  runApp(const BottomNavigationBarApp());
+  runApp(const MainApp());
 }
 
-class BottomNavigationBarApp extends StatelessWidget {
-  const BottomNavigationBarApp({super.key});
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: BottomNavigationBarExample(),
+    final ColorScheme colorScheme = ColorScheme.fromSeed(
+      seedColor: Colors.lightGreen,
     );
-  }
-}
-
-class BottomNavigationBarExample extends StatefulWidget {
-  const BottomNavigationBarExample({super.key});
-
-  @override
-  State<BottomNavigationBarExample> createState() =>
-      _BottomNavigationBarExampleState();
-}
-
-class _BottomNavigationBarExampleState
-    extends State<BottomNavigationBarExample> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(home: GalleryScreen());
+    return MaterialApp(
+      title: 'Deteksi Kue',
+      theme: ThemeData(
+        colorScheme: colorScheme,
+        textTheme: GoogleFonts.montserratTextTheme(),
+        scaffoldBackgroundColor: Colors.white,
+      ),
+      home: const Home(),
+    );
   }
 }
