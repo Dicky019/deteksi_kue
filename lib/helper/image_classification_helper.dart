@@ -19,6 +19,7 @@ import 'dart:io';
 import 'dart:isolate';
 
 import 'package:camera/camera.dart';
+import 'package:deteksi_kue/constant.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
@@ -26,9 +27,6 @@ import 'package:tflite_flutter/tflite_flutter.dart';
 import 'isolate_inference.dart';
 
 class ImageClassificationHelper {
-  static const modelPath = 'assets/models/mobilenet_quant.tflite';
-  static const labelsPath = 'assets/models/labels.txt';
-
   late final Interpreter interpreter;
   late final List<String> labels;
   late final IsolateInference isolateInference;

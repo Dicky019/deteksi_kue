@@ -1,12 +1,14 @@
 import 'dart:developer';
 
+import 'package:deteksi_kue/helper/fetch_kues.dart';
 import 'package:deteksi_kue/model/kue.dart';
 import 'package:deteksi_kue/router_mixin.dart';
 import 'package:deteksi_kue/ui/detail_kue.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
-final kues = Kues.faker(20);
+final kuesFaker = Kues.faker(20);
 
 class KatalogKue extends StatefulWidget {
   const KatalogKue({super.key});
@@ -16,13 +18,23 @@ class KatalogKue extends StatefulWidget {
 }
 
 class _KatalogKueState extends State<KatalogKue> with RouterMixin {
-  late List<Kue> searchKues;
+  var isLoading = false;
+  late List<Kue> searchKues = kuesFaker.values;
+  late Kues _kues;
   final TextEditingController searchC = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    searchKues = kues.values.toList();
+
+    isLoading = true;
+    fetchData().then((value) {
+      _kues = value;
+      searchKues = _kues.values.toList();
+      isLoading = false;
+      setState(() {});
+    });
+
     searchC.addListener(search);
   }
 
@@ -35,7 +47,7 @@ class _KatalogKueState extends State<KatalogKue> with RouterMixin {
 
   void search() {
     setState(() {
-      searchKues = kues.values
+      searchKues = _kues.values
           .where((kue) =>
               kue.title.toLowerCase().contains(searchC.text.toLowerCase()))
           .toList();
@@ -56,82 +68,85 @@ class _KatalogKueState extends State<KatalogKue> with RouterMixin {
         ),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: Column(
-          children: [
-            const Gap(20),
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: searchC,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.black, width: 1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      hintText: 'Cari Kue...',
-                      suffixIcon: Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: IconButton(
-                          onPressed: search,
-                          icon: const Icon(Icons.search),
+      body: Skeletonizer(
+        enabled: isLoading,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Column(
+            children: [
+              const Gap(20),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: searchC,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.black, width: 1),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        hintText: 'Cari Kue...',
+                        suffixIcon: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: IconButton(
+                            onPressed: search,
+                            icon: const Icon(Icons.search),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const Gap(20),
-            Expanded(
-              child: ListView.separated(
-                separatorBuilder: (context, index) => const Gap(8),
-                itemCount: searchKues.length,
-                itemBuilder: (context, index) {
-                  final kue = searchKues[index];
-                  return InkWell(
-                    onTap: () =>
-                        navigation(context, (context) => DetailKue(kue: kue)),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.black, width: 0.6),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: ListTile(
-                        leading: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Image.network(
-                            kue.image,
-                            height: 72,
-                            width: 75,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        title: Text(
-                          kue.title,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                          kue.minides,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12,
-                          ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ),
-                  );
-                },
+                ],
               ),
-            ),
-            const Gap(24),
-          ],
+              const Gap(20),
+              Expanded(
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => const Gap(8),
+                  itemCount: searchKues.length,
+                  itemBuilder: (context, index) {
+                    final kue = searchKues[index];
+                    return InkWell(
+                      onTap: () =>
+                          navigation(context, (context) => DetailKue(kue: kue)),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.black, width: 0.6),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: ListTile(
+                          leading: ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: Image.network(
+                              kue.image,
+                              height: 72,
+                              width: 75,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          title: Text(
+                            kue.title,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            kue.minides,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const Gap(24),
+            ],
+          ),
         ),
       ),
     );

@@ -95,13 +95,13 @@ class Kues {
     };
   }
 
-  factory Kues.fromMap(Map<String, dynamic> map) {
+  factory Kues.fromMap(List<dynamic> list) {
     return Kues(
-      values: List<Kue>.from(
-        (map['values'] as List<int>).map<Kue>(
-          (x) => Kue.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      values: list
+          .map(
+            (x) => Kue.fromMap(x as Map<String, dynamic>),
+          )
+          .toList(),
     );
   }
 
@@ -117,7 +117,7 @@ class Kues {
   String toJson() => json.encode(toMap());
 
   factory Kues.fromJson(String source) =>
-      Kues.fromMap(json.decode(source) as Map<String, dynamic>);
+      Kues.fromMap(json.decode(source) as List<dynamic>);
 
   @override
   String toString() => 'Kues(values: $values)';

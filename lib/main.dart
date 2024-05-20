@@ -32,6 +32,7 @@ class MainApp extends StatelessWidget {
     );
     return MaterialApp(
       title: 'Deteksi Kue',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: colorScheme,
         textTheme: GoogleFonts.montserratTextTheme(),
