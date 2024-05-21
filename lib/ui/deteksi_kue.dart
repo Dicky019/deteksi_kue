@@ -184,7 +184,7 @@ class Deteksidescripsi extends StatelessWidget {
         ),
         Center(
           child: Text(
-            "Onde-Onde",
+            title,
             style: GoogleFonts.spaceGrotesk(
               fontWeight: FontWeight.bold,
               fontSize: 24,
