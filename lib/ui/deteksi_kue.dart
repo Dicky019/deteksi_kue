@@ -80,7 +80,8 @@ class _DeteksiKueState extends State<DeteksiKue> with RouterMixin {
       // Formatting to 2 decimal places
       percent = percentage.toStringAsFixed(2);
 
-      log(result.toString());
+      log(result.toString(), name: "result");
+      log(classification?.toString() ?? "dasdasd", name: "result");
       setState(() {});
     }
   }
@@ -99,7 +100,7 @@ class _DeteksiKueState extends State<DeteksiKue> with RouterMixin {
 
     imagePath = result?.path;
     setState(() {});
-    processImage();
+    await processImage();
   }
 
   @override
