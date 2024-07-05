@@ -28,7 +28,7 @@ class PrediksiKueModel {
     return PrediksiKueModel(
       predicted: map['predicted'] ?? false,
       predictedClass: map['predicted_class'] ?? "...",
-      confidenceScore: map['confidenceScore'] ?? "...",
+      confidenceScore: map['confidence_score'] ?? "...",
       image: image,
     );
   }

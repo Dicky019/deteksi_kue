@@ -26,20 +26,20 @@ def predict_image(image_path):
     predicted_class_result = class_names[predicted_class[0]],
 
     # Tampilkan hasil
-    if predicted_class[0] == 0:
-        print("Prediksi: Benar")
-        return {
-            'predicted' : True,
-            'predicted_class' : predicted_class_result,
-            'confidence_score' : confidence_score_result
-        }
-    else:
-        print("Prediksi: Salah")
-        return {
-            'predicted' : False,
-            'predicted_class' : '-',
-            'confidence_score' : '-'
-        }
+    # if predicted_class[0] == 0:
+    print("Prediksi: Benar")
+    return {
+        'predicted' : True,
+        'predicted_class' : ''.join(predicted_class_result),
+        'confidence_score' : confidence_score_result
+    }
+    # else:
+    #     print("Prediksi: Salah")
+    #     return {
+    #         'predicted' : False,
+    #         'predicted_class' : '-',
+    #         'confidence_score' : '-'
+    #     }
 
     # # Tampilkan nama kelas
 
