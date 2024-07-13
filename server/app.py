@@ -67,7 +67,7 @@ def predict():
         return jsonify(result)
 
 @app.route('/', methods=['GET'])
-def predict():
+def servercheck():
     return {
         'server' : True,
         'helo' : "word",
