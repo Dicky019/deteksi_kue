@@ -66,6 +66,13 @@ def predict():
         result = predict_image(temp_path)
         return jsonify(result)
 
+@app.route('/', methods=['GET'])
+def predict():
+    return {
+        'server' : True,
+        'helo' : "word",
+    }
+
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=8080)
