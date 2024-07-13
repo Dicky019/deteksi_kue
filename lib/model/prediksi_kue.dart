@@ -25,10 +25,16 @@ class PrediksiKueModel {
     Map<String, dynamic> map,
     File image,
   ) {
+    final predicted = (map['predicted'] ?? "...") as bool;
+    final predictedClass = (map['predicted_class'] ?? "...") as String;
+    final confidenceScore = (map['confidence_score'] ?? "...") as String;
     return PrediksiKueModel(
-      predicted: map['predicted'] ?? false,
-      predictedClass: map['predicted_class'] ?? "...",
-      confidenceScore: map['confidence_score'] ?? "...",
+      predicted: predicted,
+      predictedClass: predictedClass
+          .split("_")
+          .map((predicted) => predicted.toUpperCase())
+          .join(" "),
+      confidenceScore: confidenceScore,
       image: image,
     );
   }
