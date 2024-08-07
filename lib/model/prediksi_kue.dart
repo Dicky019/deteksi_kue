@@ -28,12 +28,17 @@ class PrediksiKueModel {
     final predicted = (map['predicted'] ?? "...") as bool;
     final predictedClass = (map['predicted_class'] ?? "...") as String;
     final confidenceScore = (map['confidence_score'] ?? "...") as String;
+
+    final predictedClassJson = predictedClass == "kue_onde"
+        ? "Kue Onde-Onde"
+        : predictedClass
+            .split("_")
+            .map((predicted) => predicted.toUpperCase())
+            .join(" ");
+
     return PrediksiKueModel(
       predicted: predicted,
-      predictedClass: predictedClass
-          .split("_")
-          .map((predicted) => predicted.toUpperCase())
-          .join(" "),
+      predictedClass: predictedClassJson,
       confidenceScore: confidenceScore,
       image: image,
     );

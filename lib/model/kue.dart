@@ -38,12 +38,7 @@ class Kue {
     return Kue(
       title: faker.food.cuisine(),
       minides: faker.lorem.sentence(),
-      image: faker.image.image(
-        width: 1200,
-        height: 900,
-        keywords: ['food', 'nature'],
-        random: true,
-      ),
+      image: 'https://deteksi-kue-api.vercel.app/onde_onde.jpg',
       markdownData: """
 # Minimal Markdown Test
 ---
