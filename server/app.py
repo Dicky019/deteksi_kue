@@ -1,11 +1,19 @@
 from tensorflow.keras.models import load_model
+from tensorflow.keras.layers import DepthwiseConv2D
 from tensorflow.keras.utils import load_img, img_to_array
 import numpy as np
 from flask import Flask, request, jsonify
 
-# Muat model yang telah dilatih sebelumnya
-model = load_model('cake_model.h5')
-class_names = ['kue_barongko', 'kue_dange', 'kue_lapis', 'kue_onde', 'kue_taripang']  # Ganti dengan nama kelas Anda
+class CustomDepthwiseConv2D(DepthwiseConv2D):
+    def __init__(self, *args, **kwargs):
+        # Remove 'groups' if it exists
+        kwargs.pop('groups', None)
+        super(CustomDepthwiseConv2D, self).__init__(*args, **kwargs)
+
+# Load the model using the custom layer
+model = load_model('cake_model.h5', custom_objects={'DepthwiseConv2D': CustomDepthwiseConv2D})
+
+class_names = ['kue_barongko', 'kue_dange', 'kue_lapis', 'kue_onde', 'kue_taripang']
 
 app = Flask(__name__)
 
@@ -54,9 +62,10 @@ def predict_image(image_path):
 @app.route('/', methods=['POST'])
 def predict():
     if 'file' not in request.files:
-        return jsonify(error='No file part')
+        return jsonify(error='No file part'), 400
 
     file = request.files['file']
+    
     if file.filename == '':
         return jsonify(error='No selected file')
 
@@ -66,13 +75,10 @@ def predict():
         result = predict_image(temp_path)
         return jsonify(result)
 
+# Server health check
 @app.route('/', methods=['GET'])
 def servercheck():
-    return {
-        'server' : True,
-        'helo' : "word",
-    }
-
+    return {'server': True, 'hello': "world"}
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=8080)
